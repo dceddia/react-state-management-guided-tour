@@ -1,8 +1,16 @@
 import React from 'react';
-import { useTodos } from './TodoContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { add, toggle } from './todosSlice';
 
 const Todos = () => {
-  const { todos, addTodo, toggleTodo } = useTodos();
+  const todos = useSelector(state => state.todos);
+  const dispatch = useDispatch()
+
+  const addTodo = event => {
+    event.preventDefault();
+    dispatch(add(event.target.item.value))
+    event.target.item.value = ''
+  }
 
   return (
     <>
@@ -19,7 +27,7 @@ const Todos = () => {
                   type="checkbox"
                   className="mr-2"
                   value={todo.done}
-                  onChange={() => toggleTodo(todo.id)} />
+                  onChange={() => dispatch(toggle(todo.id))} />
                 <span >{todo.name}</span>
               </label>
             </li>
