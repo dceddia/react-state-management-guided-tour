@@ -1,35 +1,44 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'add':
+      return [
+        ...state,
+        {
+          id: Math.random(),
+          name: action.itemName,
+          done: false
+        },
+      ]
+    case 'toggle':
+      return state.map(todo => {
+        if (todo.id === action.id) {
+          return {
+            ...todo,
+            done: !todo.done
+          }
+        }
+        return todo;
+      })
+  }
+}
+
 
 const App = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, dispatch] = useReducer(reducer, []);
 
   const addTodo = (event) => {
     event.preventDefault();
-    const itemName = event.target.item.value;
-    event.target.item.value = '';
-
-    setTodos((previous) => {
-      return [
-        ...previous,
-        {
-          id: Math.random(),
-          name: itemName,
-          done: false
-        },
-      ];
-    });
+    dispatch({
+      type: 'add',
+      itemName: event.target.item.value
+    })
+    event.target.item.value = ''
   };
 
   const toggleTodo = id => {
-    setTodos(todos.map(todo => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          done: !todo.done
-        }
-      }
-      return todo;
-    }))
+    dispatch({ type: 'toggle', id })
   }
 
   return (
