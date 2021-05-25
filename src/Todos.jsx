@@ -1,16 +1,26 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { add, toggle } from './todosSlice';
+import { observer } from 'mobx-react-lite';
+import { useTodos } from './TodoContext';
+import { action } from 'mobx';
 
-const Todos = () => {
-  const todos = useSelector(state => state.todos);
-  const dispatch = useDispatch()
+const Todos = observer(() => {
+  const todos = useTodos();
 
-  const addTodo = event => {
+  const addTodo = action(event => {
     event.preventDefault();
-    dispatch(add(event.target.item.value))
+    todos.push({
+      id: Math.random(),
+      name: event.target.item.value,
+      done: false
+    })
     event.target.item.value = ''
-  }
+  })
+
+  // Wrap these in action() if the observable doesn't
+  // have methods for making changes.
+  const toggleTodo = action(todo => {
+    todo.done = !todo.done
+  })
 
   return (
     <>
@@ -27,7 +37,7 @@ const Todos = () => {
                   type="checkbox"
                   className="mr-2"
                   value={todo.done}
-                  onChange={() => dispatch(toggle(todo.id))} />
+                  onChange={() => toggleTodo(todo)} />
                 <span >{todo.name}</span>
               </label>
             </li>
@@ -36,6 +46,6 @@ const Todos = () => {
       </form>
     </>
   )
-}
+})
 
 export default Todos;
