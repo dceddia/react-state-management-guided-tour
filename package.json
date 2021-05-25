@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
+    "@xstate/react": "^1.3.3",
     "json-server": "^0.16.3",
     "mobx": "^6.3.2",
     "mobx-react-lite": "^3.2.0",
@@ -19,7 +20,8 @@
     "react-query": "^3.16.0",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
-    "tailwindcss": "^2.1.2"
+    "tailwindcss": "^2.1.2",
+    "xstate": "^4.19.1"
   },
   "devDependencies": {
     "@tailwindcss/jit": "^0.1.10",
