@@ -1,0 +1,19 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "name": "sunglasses",
+      "done": true
+    },
+    {
+      "id": 2,
+      "name": "swimsuit",
+      "done": false
+    },
+    {
+      "id": 3,
+      "name": "books",
+      "done": false
+    }
+  ]
+}

@@ -1,23 +1,35 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useTodos } from './TodoContext';
+import { useQuery } from 'react-query';
 
 const Todos = observer(() => {
-  const todoList = useTodos();
+  const {
+    isLoading,
+    isFetching,
+    data,
+    error
+  } = useQuery("todos", () =>
+    fetch("http://localhost:3131/todos")
+      .then(res => res.json())
+  )
 
   const addTodo = event => {
     event.preventDefault();
-    todoList.add(event.target.item.value);
     event.target.item.value = ''
   }
+
+  if (isLoading) return "Loading..."
+  if (error) return `Error: ${error.message}`
 
   return (
     <>
       <h1>Packing List</h1>
       <form onSubmit={addTodo}>
         <input type="text" name="item" />
+        {isFetching && <div className="text-center">Updating...</div>}
         <ul>
-          {todoList.todos.map((todo) => (
+          {data.map((todo) => (
             <li key={todo.id} className="ml-3">
               <label className={
                 todo.done ? 'done' : ''

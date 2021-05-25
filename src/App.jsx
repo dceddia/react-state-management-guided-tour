@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import Todos from './Todos';
 import { TodoContext } from './TodoContext';
-import { TodoList } from './models';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
+const client = new QueryClient();
 
 const App = () => {
-  const [todoList] = useState(() => TodoList.create({ todos: [] }));
-
   return (
-    <TodoContext.Provider value={todoList}>
+    <QueryClientProvider client={client}>
       <main>
         <Todos />
       </main>
-    </TodoContext.Provider>
+    </QueryClientProvider>
   );
 };
 
