@@ -1,26 +1,15 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useTodos } from './TodoContext';
-import { action } from 'mobx';
 
 const Todos = observer(() => {
-  const todos = useTodos();
+  const todoList = useTodos();
 
-  const addTodo = action(event => {
+  const addTodo = event => {
     event.preventDefault();
-    todos.push({
-      id: Math.random(),
-      name: event.target.item.value,
-      done: false
-    })
+    todoList.add(event.target.item.value);
     event.target.item.value = ''
-  })
-
-  // Wrap these in action() if the observable doesn't
-  // have methods for making changes.
-  const toggleTodo = action(todo => {
-    todo.done = !todo.done
-  })
+  }
 
   return (
     <>
@@ -28,7 +17,7 @@ const Todos = observer(() => {
       <form onSubmit={addTodo}>
         <input type="text" name="item" />
         <ul>
-          {todos.map((todo) => (
+          {todoList.todos.map((todo) => (
             <li key={todo.id} className="ml-3">
               <label className={
                 todo.done ? 'done' : ''
@@ -37,7 +26,7 @@ const Todos = observer(() => {
                   type="checkbox"
                   className="mr-2"
                   value={todo.done}
-                  onChange={() => toggleTodo(todo)} />
+                  onChange={() => todo.toggle()} />
                 <span >{todo.name}</span>
               </label>
             </li>
