@@ -1,19 +1,16 @@
+import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { add, toggle } from './todosSlice';
 
-const Todos = () => {
-  const todos = useSelector((state) => state.todos);
-  const dispatch = useDispatch();
-
+// Wrap the component in observer()
+const Todos = observer(({ todoList }) => {
   const addTodo = (event) => {
     event.preventDefault();
-    dispatch(add(event.target.item.value));
+    todoList.add(event.target.item.value);
     event.target.item.value = '';
   };
 
-  const toggleTodo = (id) => {
-    dispatch(toggle(id));
+  const toggleTodo = (todo) => {
+    todoList.toggleTodo(todo);
   };
 
   return (
@@ -22,14 +19,14 @@ const Todos = () => {
       <form onSubmit={addTodo}>
         <input type="text" name="item" />
         <ul>
-          {todos.map((todo) => (
+          {todoList.todos.map((todo) => (
             <li key={todo.id} className="ml-3">
               <label className={todo.done ? 'done' : ''}>
                 <input
                   type="checkbox"
                   className="mr-2"
                   value={todo.done}
-                  onChange={() => toggleTodo(todo.id)}
+                  onChange={() => toggleTodo(todo)}
                 />
                 <span>{todo.name}</span>
               </label>
@@ -39,6 +36,6 @@ const Todos = () => {
       </form>
     </>
   );
-};
+});
 
 export default Todos;

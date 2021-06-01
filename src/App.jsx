@@ -1,22 +1,16 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import Todos from './Todos';
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
-import todosReducer from './todosSlice';
+import TodoList from './TodoList';
 
-const store = configureStore({
-  reducer: {
-    todos: todosReducer,
-  },
-});
+// Create a long-lived instance. It's observable.
+const list = new TodoList();
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <main>
-        <Todos />
-      </main>
-    </Provider>
+    <main>
+      {/* pass the instance around */}
+      <Todos todoList={list} />
+    </main>
   );
 };
 
