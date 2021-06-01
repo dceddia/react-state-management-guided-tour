@@ -1,8 +1,20 @@
-import React, { useContext } from 'react';
-import { TodoContext } from './TodoContext';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { add, toggle } from './todosSlice';
 
 const Todos = () => {
-  const { todos, addTodo, toggleTodo } = useContext(TodoContext);
+  const todos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
+
+  const addTodo = (event) => {
+    event.preventDefault();
+    dispatch(add(event.target.item.value));
+    event.target.item.value = '';
+  };
+
+  const toggleTodo = (id) => {
+    dispatch(toggle(id));
+  };
 
   return (
     <>
