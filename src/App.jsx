@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
 import Todos from './Todos';
+import { TodoContext } from './TodoContext';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -42,9 +43,17 @@ const App = () => {
   };
 
   return (
-    <main>
-      <Todos todos={todos} addTodo={addTodo} toggleTodo={toggleTodo} />
-    </main>
+    <TodoContext.Provider
+      value={{
+        todos,
+        addTodo,
+        toggleTodo,
+      }}
+    >
+      <main>
+        <Todos />
+      </main>
+    </TodoContext.Provider>
   );
 };
 

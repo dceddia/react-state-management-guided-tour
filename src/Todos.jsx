@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { TodoContext } from './TodoContext';
 
-const Todos = ({ todos, addTodo, toggleTodo }) => {
+const Todos = () => {
+  const { todos, addTodo, toggleTodo } = useContext(TodoContext);
+
   return (
     <>
       <h1>Packing List</h1>
