@@ -4,14 +4,18 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "cross-env NODE_ENV=production vite build"
+    "build": "cross-env NODE_ENV=production vite build",
+    "server": "json-server -p 3131 --watch todo-data.json",
+    "server:slow": "json-server -p 3131 --watch --delay 350 todo-data.json"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
+    "json-server": "^0.16.3",
     "mobx": "^6.3.2",
     "mobx-react-lite": "^3.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-query": "^3.16.0",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "tailwindcss": "^2.1.2"

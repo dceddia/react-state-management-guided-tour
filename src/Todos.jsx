@@ -1,33 +1,30 @@
-import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { useQuery } from 'react-query';
 
-// Wrap the component in observer()
-const Todos = observer(({ todoList }) => {
+const Todos = () => {
+  const { isLoading, isFetching, data, error } = useQuery('todos', () =>
+    fetch('http://localhost:3131/todos').then((res) => res.json())
+  );
+
   const addTodo = (event) => {
     event.preventDefault();
-    todoList.add(event.target.item.value);
     event.target.item.value = '';
   };
 
-  const toggleTodo = (todo) => {
-    todoList.toggleTodo(todo);
-  };
+  if (isLoading) return 'Loading...';
+  if (error) return `Error: ${error.message}`;
 
   return (
     <>
       <h1>Packing List</h1>
       <form onSubmit={addTodo}>
         <input type="text" name="item" />
+        {isFetching && <div className="text-center">Updating...</div>}
         <ul>
-          {todoList.todos.map((todo) => (
+          {data.map((todo) => (
             <li key={todo.id} className="ml-3">
               <label className={todo.done ? 'done' : ''}>
-                <input
-                  type="checkbox"
-                  className="mr-2"
-                  value={todo.done}
-                  onChange={() => toggleTodo(todo)}
-                />
+                <input type="checkbox" className="mr-2" value={todo.done} />
                 <span>{todo.name}</span>
               </label>
             </li>
@@ -36,6 +33,6 @@ const Todos = observer(({ todoList }) => {
       </form>
     </>
   );
-});
+};
 
 export default Todos;
